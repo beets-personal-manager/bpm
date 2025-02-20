@@ -1,5 +1,5 @@
 services:
-  beetbox:
+  bpm:
     image: ghcr.io/beets-personal-manager/bpm:main
     volumes:
       - config:/config
