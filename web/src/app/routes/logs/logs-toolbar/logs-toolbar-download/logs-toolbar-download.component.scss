@@ -1,0 +1,5 @@
+@use "../../../../core/styles/colors" as app-colors;
+
+.import-color {
+    color: app-colors.$action-color !important;
+}

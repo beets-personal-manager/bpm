@@ -1,0 +1,44 @@
+@use '@angular/material' as mat;
+
+.headers-align {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content {
+    > mat-expansion-panel {
+        width: 50% !important;
+        margin: auto;
+    }
+
+    > mat-expansion-panel:first-child {
+        margin-top: 16px !important;
+    }
+
+    > .mat-expanded:not(:first-child) {
+        margin-top: 16px !important;
+    }
+    > .mat-expanded:not(:last-child) {
+        margin-bottom: 16px !important;
+    }
+}
+
+:host-context(.is-handset) .content {
+    > mat-expansion-panel {
+        width: calc(100% - 40px) !important;
+        margin: auto;
+    }
+
+    > mat-expansion-panel:first-child {
+        margin-top: 16px !important;
+    }
+}
+
+.expansion-panel {
+    outline: var(--mdc-outlined-card-outline-color, var(--mat-sys-outline-variant)) solid 1px;
+}
+
+.expansion-content {
+    overflow-y: auto;
+    height: 100%;
+}

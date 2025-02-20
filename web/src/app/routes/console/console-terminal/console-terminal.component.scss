@@ -1,0 +1,32 @@
+@use '../../../core/styles/colors' as app-colors;
+
+#output {
+    width: 100%;
+    height: calc(100% - var(--mat-form-field-container-height) - 8px);
+    background-color: black !important;
+}
+
+:host ::ng-deep .terminal-outer {
+    padding: 0 !important;
+}
+
+:host ::ng-deep .resize-handle {
+    display: none !important;
+}
+
+:host ::ng-deep .xterm-viewport {
+    width: 100% !important;
+}
+
+.stop-button:not(:disabled) {
+    color: app-colors.$negative-color !important;
+}
+
+.input-container {
+    height: 100%;
+    background-color: black;
+
+    app-console-terminal-input:after {
+        height: 4px;
+    }
+}

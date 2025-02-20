@@ -1,0 +1,12 @@
+<mat-form-field>
+    <mat-label [class.is-disabled]="disabled()">Input</mat-label>
+    <input autofocus matInput type="text" [ngModel]="inputValue()" (ngModelChange)="value.set($event)" [disabled]="disabled()" (keyup.enter)="submit()" (keyup.escape)="reset()">
+    <div matSuffix>
+        <button mat-icon-button (click)="reset()" [disabled]="buttonsDisabled()">
+            <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button (click)="submit()" [disabled]="buttonsDisabled()">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</mat-form-field>

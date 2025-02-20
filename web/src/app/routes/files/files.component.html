@@ -1,0 +1,83 @@
+<ng-container
+    [ngTemplateOutletContext]="{dataSource, select: true, activate: true, displayCurrentPath: false}"
+    [ngTemplateOutlet]="dataTableTemplate">
+</ng-container>
+
+<ng-template #dataTableTemplate let-dataSource="dataSource" let-select="select" let-activate="activate" let-displayCurrentPath="displayCurrentPath">
+    <app-data-table [dataSource]="dataSource" [allowSelect]="select" [allowActivate]="activate" (onRowActivate)="navigateTo($event)">
+        <ng-container matSort>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="name-cell"> Name </th>
+                <td mat-cell *matCellDef="let file" class="name-cell"> @if(displayCurrentPath){
+                    {{ path() }}
+                }{{ file.name }}@if(file.isDir) {
+                    {{ fileSeparator() }}
+                } </td>
+            </ng-container>
+
+            <ng-container matColumnDef="size">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Size </th>
+                <td mat-cell *matCellDef="let file">
+                    <ng-container *ngTemplateOutlet="dirDataTemplate;context: {isDir: !file.isDir, data: file.size, output: sizeTemplate}"></ng-container>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="files">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Files </th>
+                <td mat-cell *matCellDef="let file">
+                    <ng-container *ngTemplateOutlet="dirDataTemplate;context: {isDir: file.isDir, data: file.files, output: outputTemplate}"></ng-container>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="folders">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Folders </th>
+                <td mat-cell *matCellDef="let file">
+                    <ng-container *ngTemplateOutlet="dirDataTemplate;context: {isDir: file.isDir, data: file.folders, output: outputTemplate}"></ng-container>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="types">
+                <th mat-header-cell class="chips-cell" *matHeaderCellDef> Types </th>
+                <td mat-cell class="chips-cell" *matCellDef="let file">
+                    <ng-container *ngTemplateOutlet="dirDataTemplate; context: {isDir: file.isDir, data: file.types, output: typesTemplate}"></ng-container>
+                </td>
+            </ng-container>
+        </ng-container>
+    </app-data-table>
+</ng-template>
+
+<ng-template [appToolbarSender]="1">
+    <app-files-toolbar-import
+        [currentPath]="currentPath()"
+        [queries]="queries()"
+        [libraries]="libraries()"
+        [dataSource]="dataSource">
+    </app-files-toolbar-import>
+</ng-template>
+
+<span app-delete-confirm [selected]="(dataSource.selectedData$ | async) ?? []" [deleter]="fileDeleter">
+    <ng-container
+        [ngTemplateOutletContext]="{dataSource: dataSourceSelected, select: false, activate: false, displayCurrentPath: true}"
+        [ngTemplateOutlet]="dataTableTemplate">
+    </ng-container>
+</span>
+
+<ng-template #outputTemplate let-data>
+    {{ data }}
+</ng-template>
+
+<ng-template #sizeTemplate let-data>
+    {{ data | prettyBytes }}
+</ng-template>
+
+<ng-template #typesTemplate let-types>
+    <app-type-chips [types]="types"></app-type-chips>
+</ng-template>
+
+<ng-template #dirDataTemplate let-data="data" let-isDir="isDir" let-output="output">
+    @if (isDir) {
+        <ng-container *ngTemplateOutlet="output; context: {$implicit: data}"></ng-container>
+    } @else {
+        --
+    }
+</ng-template>

@@ -1,0 +1,43 @@
+services:
+  beetbox:
+#    image:
+    build: .
+    pull_policy: build
+    volumes:
+      - config:/config
+      - logs:/logs
+      - library:/library
+      - import:/import
+    ports:
+      - "23387:23387"
+    environment:
+      TZ: ${TZ:-America/New_York}
+    restart: always
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+volumes:
+  library:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./bpm/library
+  import:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./bpm/import
+  logs:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./bpm/logs
+  config:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ./bpm/config

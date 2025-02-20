@@ -1,0 +1,13 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (link of links(); track link.link) {
+        <a mat-tab-link
+           routerLinkActive
+           [disabled]="disabled()[$index]"
+           [queryParams]="link.queryParams"
+           [active]="link.link === active()"
+           [routerLink]="link.link">{{ link.name }}</a>
+    }
+</nav>
+<mat-tab-nav-panel #tabPanel class="contents">
+    <router-outlet></router-outlet>
+</mat-tab-nav-panel>

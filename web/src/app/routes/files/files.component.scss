@@ -1,0 +1,15 @@
+:host {
+    overflow: auto;
+    height: 100%;
+    display: block;
+    background-color: var(--mat-table-background-color);
+}
+
+.name-cell {
+    max-width: 20vw;
+    overflow-wrap: break-word;
+}
+
+.chips-cell {
+    max-width: 20vw;
+}

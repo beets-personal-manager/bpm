@@ -1,0 +1,33 @@
+.container {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.stat-cards {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 75vw;
+    margin: 20px auto auto;
+
+    :not(:last-child) {
+        margin-right: 20px;
+    }
+}
+
+:host-context(.is-handset) {
+    .stat-cards {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto 20px;
+        width: unset;
+
+        * {
+            width: 100%;
+        }
+
+        :not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+}

@@ -1,0 +1,34 @@
+<button mat-icon-button [matTooltip]="tooltip()" [matMenuTriggerFor]="menu">
+    <mat-icon>{{ icon() }}</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu" (closed)="onMenuClose()">
+    @if (clearable()) {
+        <ng-container
+            [ngTemplateOutlet]="buttonTemplate"
+            [ngTemplateOutletContext]="{data: undefined, text: clearableText(), indeterminate: true}">
+        </ng-container>
+    }
+
+    @let data = dataSource().connect() | async;
+    @if (data) {
+        @for (d of data; track d) {
+            <ng-container
+                [ngTemplateOutlet]="buttonTemplate"
+                [ngTemplateOutletContext]="{data: d, text: d, indeterminate: false}">
+            </ng-container>
+        }
+    }
+</mat-menu>
+
+<ng-template #buttonTemplate let-data="data" let-text="text" let-indeterminate="indeterminate">
+    <button mat-menu-item (click)="dataSource().toggleSelection(data); $event.stopPropagation()">
+        <app-select-button
+            [indeterminate]="indeterminate"
+            [radio]="!multiple()"
+            [selectable]="dataSource()"
+            [data]="data"
+            [text]="text">
+        </app-select-button>
+    </button>
+</ng-template>

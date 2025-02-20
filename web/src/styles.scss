@@ -1,0 +1,71 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+@use 'theme-colors' as theme;
+@use 'app/core/styles/colors' as app-colors;
+
+@use 'material-icons/iconfont/filled.scss' as fonts;
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+
+@import "@xterm/xterm/css/xterm.css";
+
+@include mat.elevation-classes();
+@include mat.app-background();
+
+$light-theme: mat.define-theme((
+    color: (
+        primary: theme.$primary-palette,
+        tertiary: theme.$tertiary-palette,
+        theme-type: light,
+    ),
+    typography: (
+        plain-family: Roboto,
+    ),
+    density: (
+        scale: 0,
+    ),
+));
+
+$dark-theme: mat.define-theme((
+    color: (
+        primary: theme.$primary-palette,
+        tertiary: theme.$tertiary-palette,
+        theme-type: dark,
+    ),
+    typography: (
+        plain-family: Roboto,
+    ),
+    density: (
+        scale: 0,
+    ),
+));
+
+html, body {
+    height: 100%;
+}
+
+html, body, .apply-dark-colors {
+    color-scheme: dark;
+    @include mat.all-component-themes($dark-theme);
+}
+
+@media (prefers-color-scheme: light) {
+    html, body {
+        color-scheme: light;
+        @include mat.all-component-colors($light-theme)
+    }
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+}
+
+.snackbar-error {
+    background-color: app-colors.$negative-color;
+}

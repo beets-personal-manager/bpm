@@ -1,0 +1,57 @@
+<div class="expansion-content">
+    <mat-accordion class="content">
+        @if (noItems()) {
+            <mat-expansion-panel class="mat-elevation-z0 expansion-panel" [disabled]="true">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="title-size">
+                        No items running
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        } @else {
+            @for(values of [running(), queue()]; track $index) {
+                @for (qu of values; track qu.id) {
+                    <mat-expansion-panel class="mat-elevation-z0 expansion-panel">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="title-size">
+                                {{ qu.kind }}
+                            </mat-panel-title>
+                            <mat-panel-description class="headers-align">
+                                <span>{{ qu.time | date:'medium' }}</span>
+                                @if (qu.running) {
+                                    <mat-spinner [diameter]="25"></mat-spinner>
+                                }
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        @switch (qu.kind) {
+                            @case ('import') {
+                                <app-console-queue-import-view [item]="asImport(qu)"></app-console-queue-import-view>
+                            }
+                        }
+
+                        <mat-action-row>
+                            @if (qu.running) {
+                                <button mat-button (click)="stopConsole()">Stop</button>
+                            } @else {
+                                @if (!$first) {
+                                    <button mat-button (click)="moveTop(qu.id)">Top</button>
+                                    @if ($index > 1) {
+                                        <button mat-button (click)="moveUp(qu.id)">Up</button>
+                                    }
+                                }
+                                @if (!$last) {
+                                    <button mat-button (click)="moveDown(qu.id)">Down</button>
+                                    @if ($index < (values.length - 1)) {
+                                        <button mat-button (click)="moveBottom(qu.id)">Bottom</button>
+                                    }
+                                }
+                                <button mat-button (click)="remove(qu.id)">Remove</button>
+                            }
+                        </mat-action-row>
+                    </mat-expansion-panel>
+                }
+            }
+        }
+    </mat-accordion>
+</div>

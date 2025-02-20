@@ -1,0 +1,74 @@
+@use '@angular/material/toolbar/toolbar-variables' as matToolbar;
+
+.toolbar {
+    /* Make sure the files-toolbar will stay on top of the content as it scrolls past. */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+}
+
+:host-context(.is-handset) .toolbar {
+    position: fixed;
+}
+
+:host {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+h1.app-name {
+    margin-left: 8px;
+}
+
+.list-horizontal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+}
+
+mat-sidenav {
+    width: 100vw;
+    border-radius: unset;
+}
+
+a {
+    white-space: nowrap;
+    width: auto;
+}
+
+mat-sidenav-container > * {
+    overflow: hidden;
+}
+
+$toolbar-height-desktop: matToolbar.$height-desktop;
+$toolbar-height-mobile: matToolbar.$height-mobile;
+
+.sidenav-container {
+    height: calc(100% - $toolbar-height-desktop);
+    margin-top: 0;
+}
+
+:host-context(.is-handset) .sidenav-container {
+    height: calc(100% - $toolbar-height-mobile);
+    margin-top: $toolbar-height-mobile;
+}
+
+.route-toolbar {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+mat-tree-node.activated-link {
+    background-color: var(--mat-list-active-indicator-color);
+    border-radius: var(--mat-list-active-indicator-shape);
+}
+
+.panel-link {
+    width: 100%;
+}

@@ -1,0 +1,23 @@
+<div class="albums">
+    @for (d of data(); track d.id) {
+        <mat-card class="album" appSquareSize>
+            <div class="album-content">
+                <div>
+                    @let image = d.id | albumArtUrl | async;
+
+                    <div class="album-text" [class.loaded]="hasImage(d)">
+                        <h1>{{ d.title }}</h1>
+                        <h2>{{ d.artist }}</h2>
+                    </div>
+                    @if (image && image.ok) {
+                        <img [src]="image.src" [alt]="d.title" (load)="imageLoaded(d)">
+                    }
+                </div>
+            </div>
+        </mat-card>
+    }
+</div>
+
+<ng-template [appToolbarSender]="1">
+    <app-library-toolbar-library-selector [dataSource]="libraries"></app-library-toolbar-library-selector>
+</ng-template>

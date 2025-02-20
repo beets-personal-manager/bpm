@@ -1,0 +1,17 @@
+<ng-terminal id="output" #output [draggable]="false" [appTerminalOutput]="kind()"></ng-terminal>
+<div class="input-container apply-dark-colors">
+    <app-console-terminal-input [kind]="kind()"></app-console-terminal-input>
+</div>
+
+<ng-template [appToolbarSender]="1">
+    <button matTooltip="Scroll to Bottom" (click)="scrollToBottom()" mat-icon-button>
+        <mat-icon>arrow_downward</mat-icon>
+    </button>
+</ng-template>
+
+<ng-template [appToolbarSender]="0">
+    <button matTooltip="Stop" class="stop-button" (click)="stop()" mat-icon-button [disabled]="isStopped()">
+        <mat-icon>close</mat-icon>
+    </button>
+</ng-template>
+

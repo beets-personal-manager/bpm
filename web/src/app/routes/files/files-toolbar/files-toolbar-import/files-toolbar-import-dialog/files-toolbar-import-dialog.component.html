@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>Import</h2>
+<mat-dialog-content>
+
+    <mat-card class="basic-info-card">
+        <mat-card-content>
+            <!-- Path name -->
+            <mat-form-field>
+                <mat-label>Import Path</mat-label>
+                <textarea cdkTextareaAutosize matInput [value]="importFile.path" readonly></textarea>
+            </mat-form-field>
+
+            <!-- Library -->
+            <app-dropdown class="library-dropdown" label="Library" [(selected)]="library">
+                @for (library of libraries(); track library) {
+                    <mat-option [value]="library">{{ library }}</mat-option>
+                }
+            </app-dropdown>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <!-- Options -->
+        <mat-card-title>Options</mat-card-title>
+        <mat-card-content class="no-padding">
+            <mat-selection-list class="no-padding">
+                <mat-divider></mat-divider>
+                <mat-list-option [(selected)]="groupAlbums">Group Albums</mat-list-option>
+                <mat-divider></mat-divider>
+                <mat-list-option [(selected)]="flat">Flat</mat-list-option>
+                <mat-divider></mat-divider>
+                <mat-list-option [(selected)]="singleton">Singleton</mat-list-option>
+                <mat-divider></mat-divider>
+                <mat-list-option [(selected)]="timid">Timid</mat-list-option>
+                <mat-divider></mat-divider>
+                <mat-list-option [(selected)]="asIs">As Is</mat-list-option>
+            </mat-selection-list>
+        </mat-card-content>
+    </mat-card>
+
+    @if (queries.length > 0) {
+        <mat-card>
+            <mat-card-title>Queries</mat-card-title>
+            <mat-card-content class="no-padding">
+                <mat-selection-list class="no-padding">
+                    @for (query of queries; track query) {
+                        <mat-divider></mat-divider>
+                        <mat-list-option [selected]="querySelected(query)" (selectedChange)="selectQuery(query, $event)">{{ query }}</mat-list-option>
+                    }
+                </mat-selection-list>
+            </mat-card-content>
+        </mat-card>
+    }
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="importRequest()" [disabled]="cantImport()" class="import-color">Import</button>
+</mat-dialog-actions>

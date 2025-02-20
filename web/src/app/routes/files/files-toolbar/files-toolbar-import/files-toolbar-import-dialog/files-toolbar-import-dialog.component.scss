@@ -1,0 +1,28 @@
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.basic-info-card mat-card-content {
+    display: flex;
+    flex-direction: column;
+    :not(:last-child) {
+        margin-bottom: 22px;
+    }
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+mat-card:not(:last-child) {
+    margin-bottom: 22px;
+}
+
+mat-card-title {
+    padding: 8px 16px 8px 16px;
+}
+
+.library-dropdown {
+    width: 100%;
+}

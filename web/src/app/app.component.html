@@ -1,0 +1,73 @@
+
+<mat-toolbar class="toolbar">
+    <mat-nav-list class="list-horizontal">
+        @if (isHandset()) {
+            <button matTooltip="Menu" mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+            <h1 class="app-name">{{ appName }}</h1>
+        } @else {
+            @for (nav of navRoot; track nav.link) {
+                <a
+                   mat-list-item
+                   [activated]="(nav.isActive$ | async) ?? false"
+                   [queryParams]="nav.queryParams"
+                   [routerLink]="nav.link">
+                    <ng-container *ngIf="nav.name === 'Stats'; else desktopNavTemplate">
+                        {{ appName }}
+                    </ng-container>
+                    <ng-template #desktopNavTemplate>{{ nav.name }}</ng-template>
+                </a>
+            }
+        }
+    </mat-nav-list>
+
+    <div class="route-toolbar">
+        <ng-container *appToolbarReceiver></ng-container>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #snav
+                 [mode]="'over'"
+                 [opened]="navOpened()"
+                 (openedChange)="navState.set($event)"
+                 [fixedInViewport]="true"
+                 [fixedTopGap]="toolbarHeight()">
+        <mat-nav-list>
+            <mat-tree [dataSource]="sidenavDataSource" [levelAccessor]="levelAccessor">
+                <!-- This is the tree node template for leaf nodes -->
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding
+                               (click)="navStateClick(node)"
+                               [class.activated-link]="((node | navNodeCheck).link.isExact$ | async) ?? false"
+                               tabindex="0">
+                    <ng-container *ngTemplateOutlet="nodeTemplate; context: {node: node}"></ng-container>
+                </mat-tree-node>
+                <!-- This is the tree node template for expandable nodes -->
+                <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding
+                               isExpandable
+                               [isExpanded]="true"
+                               (click)="navStateClick(node)"
+                               [class.activated-link]="((node | navNodeCheck).link.isExact$ | async) ?? false"
+                               tabindex="0">
+                    <ng-container *ngTemplateOutlet="nodeTemplate; context: {node: node}"></ng-container>
+                </mat-tree-node>
+            </mat-tree>
+        </mat-nav-list>
+        <!-- Node template -->
+        <ng-template #nodeTemplate let-rawNode="node">
+            <a mat-list-item
+               class="panel-link"
+               [disabled]="((rawNode | navNodeCheck).link.disabled$ | async) ?? true"
+               [queryParams]="(rawNode | navNodeCheck).link.queryParams"
+               [routerLink]="(rawNode | navNodeCheck).link.link">
+                <ng-container *ngIf="(rawNode | navNodeCheck).link.name === 'Stats'; else desktopSideNavTemplate">
+                    Home
+                </ng-container>
+                <ng-template #desktopSideNavTemplate>{{ (rawNode | navNodeCheck).link.name }}</ng-template>
+            </a>
+        </ng-template>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <router-outlet />
+    </mat-sidenav-content>
+</mat-sidenav-container>
