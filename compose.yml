@@ -1,8 +1,6 @@
 services:
   beetbox:
-#    image:
-    build: .
-    pull_policy: build
+    image: ghcr.io/beets-personal-manager/bpm:main
     volumes:
       - config:/config
       - logs:/logs
